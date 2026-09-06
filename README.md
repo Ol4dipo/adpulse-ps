@@ -1,8 +1,8 @@
-# ADPulse — PowerShell Edition
+# ADPulse  PowerShell Edition
 
 A dependency-free PowerShell port of [**ADPulse**](https://github.com/dievus/ADPulse), the open-source Active Directory security scanner by [**Joe Helle (dievus / TheMayor)**](https://github.com/dievus).
 
-Point it at a domain, and it runs 35 checks over LDAP/LDAPS, scores the domain out of 100, and writes console, JSON, and HTML reports — all from a single `.ps1` file, with no Python, no pip, and no modules to install.
+Point it at a domain, and it runs 35 checks over LDAP/LDAPS, scores the domain out of 100, and writes console, JSON, and HTML reports  all from a single `.ps1` file, with no Python, no pip, and no modules to install.
 
 ```powershell
 .\ADPulse.ps1 -Domain corp.local -User jdoe -Password 'P@ssw0rd!'
@@ -14,7 +14,7 @@ Point it at a domain, and it runs 35 checks over LDAP/LDAPS, scores the domain o
 
 **This is a port, not an original tool.** Every check, the scoring model, the severities, the remediation guidance, and the research behind each detection come from Joe Helle's Python ADPulse. This repository only rewrites that work in PowerShell so it runs natively on Windows without dependencies.
 
-If you get value from this, go **star the original**: **https://github.com/dievus/ADPulse** — and credit [@dievus](https://github.com/dievus). Bugs in detection *logic* almost certainly belong upstream; bugs in the *PowerShell* belong here.
+If you get value from this, go **star the original**: **https://github.com/dievus/ADPulse**  and credit [@dievus](https://github.com/dievus). Bugs in detection *logic* almost certainly belong upstream; bugs in the *PowerShell* belong here.
 
 ---
 
@@ -24,10 +24,10 @@ The original is excellent but needs Python plus `ldap3` and `impacket`. That's a
 
 This version leans on `System.DirectoryServices.Protocols`, which ships with .NET, so it runs on a stock Windows install:
 
-- **No dependencies** — one file, nothing to `pip install`
+- **No dependencies**  one file, nothing to `pip install`
 - **Runs on Windows PowerShell 5.1 and PowerShell 7+**
 - **Same checks, same scoring, same report layout** as the original
-- **Drop-and-run** — copy `ADPulse.ps1` to the host and go
+- **Drop-and-run**  copy `ADPulse.ps1` to the host and go
 
 ---
 
@@ -35,7 +35,7 @@ This version leans on `System.DirectoryServices.Protocols`, which ships with .NE
 
 - Windows PowerShell 5.1 or PowerShell 7+
 - Line of sight to a Domain Controller (LDAP 389 / LDAPS 636)
-- Domain credentials — a standard user covers most checks; some ACL/security-descriptor checks see more with elevated rights
+- Domain credentials : a standard user covers most checks; some ACL/security-descriptor checks see more with elevated rights
 - For the GPP cpassword check (check 25): read access to `\\<dc>\SYSVOL`
 
 ---
@@ -78,7 +78,7 @@ Then run a scan:
 | `-Password` | password mode | Plaintext password (single-quote it if it has special characters) |
 | `-Hash` / `-H` | hash mode | NT hash, or an `LM:NT` pair, for pass-the-hash |
 | `-DcIp` | no | DC IP or hostname; resolved via DNS if omitted |
-| `-Report` | no | `console`, `json`, `html`, or `all` — default `all` |
+| `-Report` | no | `console`, `json`, `html`, or `all`  default `all` |
 | `-OutputDir` | no | Base folder for reports; default is the current directory |
 | `-NoColor` | no | Plain console output, no ANSI colours |
 
@@ -88,8 +88,8 @@ Then run a scan:
 
 Reports land in `<OutputDir>\Reports\`:
 
-- **`ad_scan_<domain>_<timestamp>.json`** — full findings, machine-readable, easy to feed into a SIEM or diff between scans
-- **`ad_scan_<domain>_<timestamp>.html`** — dark-themed report: at-a-glance criticals, key metrics, collapsible per-category findings, and a scoring legend
+- **`ad_scan_<domain>_<timestamp>.json`** full findings, machine-readable, easy to feed into a SIEM or diff between scans
+- **`ad_scan_<domain>_<timestamp>.html`** dark-themed report: at-a-glance criticals, key metrics, collapsible per-category findings, and a scoring legend
 
 The console output gives you a summary, the top findings, key metrics, every finding by severity, and an additional-check summary table.
 
@@ -108,7 +108,7 @@ score = max(0, 100 - sum(risk_scores))
 | 40-59 | HIGH |
 | 0-39 | CRITICAL |
 
-A deliberately vulnerable lab can legitimately land on **0/100** — that just means the findings added up to more than 100 points of deductions, which is the point. On a hardened domain you'll see a much higher number.
+A deliberately vulnerable lab can legitimately land on **0/100** that just means the findings added up to more than 100 points of deductions, which is the point. On a hardened domain you'll see a much higher number.
 
 ---
 
@@ -128,17 +128,17 @@ GPP cpassword in SYSVOL (MS14-025) · AdminSDHolder ACL · SID history · shadow
 
 ## Limitations
 
-- **Registry-only settings** — NTLMv1 (`LmCompatibilityLevel`), WDigest (`UseLogonCredential`), and LDAP signing / channel binding can't be read over LDAP, so they're reported as manual-verification items.
-- **GPO content** — ADPulse checks GPO *metadata* (flags, version, SYSVOL path, links) but does **not** parse GPO settings files from SYSVOL, with the single exception of the cpassword scan in check 25.
-- **Pass-the-hash** — .NET's `LdapConnection` can't inject a raw NT hash the way the original's `ldap3` MD4 patch does. Password auth behaves identically; `-Hash` mode is best-effort and depends on platform support. For reliable PtH, drive it from tooling built for that.
-- **SMB probes** — a firewall blocking port 445 can produce false negatives on the SMBv1 / signing / null-session checks.
-- **Query cap** — LDAP searches are capped at 10,000 results each.
+- **Registry-only settings** NTLMv1 (`LmCompatibilityLevel`), WDigest (`UseLogonCredential`), and LDAP signing / channel binding can't be read over LDAP, so they're reported as manual-verification items.
+- **GPO content** ADPulse checks GPO *metadata* (flags, version, SYSVOL path, links) but does **not** parse GPO settings files from SYSVOL, with the single exception of the cpassword scan in check 25.
+- **Pass-the-hash** : .NET's `LdapConnection` can't inject a raw NT hash the way the original's `ldap3` MD4 patch does. Password auth behaves identically; `-Hash` mode is best-effort and depends on platform support. For reliable PtH, drive it from tooling built for that.
+- **SMB probes** : a firewall blocking port 445 can produce false negatives on the SMBv1 / signing / null-session checks.
+- **Query cap** : LDAP searches are capped at 10,000 results each.
 
 ---
 
 ## A note on testing
 
-This port has been validated at the code level (it parses cleanly and the logic mirrors the original) and against a lab domain, but it has **not** been exhaustively tested across every AD topology. Treat it as you would any security tool: verify surprising results against the raw directory before acting on them. If a check reports `0` where you expect findings, confirm the underlying attribute or membership actually exists in AD — in a lab, missing data (e.g. an unpopulated `operatingSystem` attribute, or `adminCount` that SDProp hasn't propagated yet) is a common and legitimate cause.
+This port has been validated at the code level (it parses cleanly and the logic mirrors the original) and against a lab domain, but it has **not** been exhaustively tested across every AD topology. Treat it as you would any security tool: verify surprising results against the raw directory before acting on them. If a check reports `0` where you expect findings, confirm the underlying attribute or membership actually exists in AD  in a lab, missing data (e.g. an unpopulated `operatingSystem` attribute, or `adminCount` that SDProp hasn't propagated yet) is a common and legitimate cause.
 
 Found a real discrepancy between this port and the original's behaviour? Open an issue.
 
