@@ -155,5 +155,4 @@ For **authorised security assessments only.** Run it solely against domains you 
 Released under the **MIT License** (see [`LICENSE`](LICENSE)). The original work is Copyright (c) 2026 Joe Helle; that attribution is preserved in the license, and this port is distributed under the same terms.
 
 - **Original ADPulse & all detection logic** — [Joe Helle (dievus / TheMayor)](https://github.com/dievus) · https://github.com/dievus/ADPulse
-- **ADCS ESC research** — SpecterOps, [*Certified Pre-Owned*](https://specterops.io/wp-content/uploads/sites/3/2022/06/Certified_Pre-Owned.pdf)
 - **Technique references** — [MITRE ATT&CK](https://attack.mitre.org/)
